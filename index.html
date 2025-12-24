@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afiz Adewale Lawal | Risk Management & IS Audit</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --primary: #0F172A;   /* Dark Navy */
+            --secondary: #1E293B; /* Lighter Navy */
+            --accent: #14B8A6;    /* Teal */
+            --text-light: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-dark: #334155;
+            --bg-light: #F1F5F9;
+            --sidebar-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- ANIMATIONS --- */
+        
+        /* 1. Breathing Effect for Profile Pic */
+        @keyframes breathe {
+            0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 10px 20px rgba(20, 184, 166, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        }
+
+        /* 2. Typewriter Effect */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent); }
+        }
+
+        .typewriter {
+            display: inline-block;
+        }
+
+        .typewriter h1 {
+            overflow: hidden; /* Ensures the content is not revealed until the animation */
+            border-right: .10em solid var(--accent); /* The cursor */
+            white-space: nowrap; /* Keeps the content on a single line */
+            margin: 0 auto;
+            letter-spacing: .05em;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+            max-width: fit-content; /* Ensure width fits text */
+        }
+
+        /* --- SIDEBAR NAVIGATION --- */
+        nav {
+            background: var(--primary);
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        nav::-webkit-scrollbar { width: 6px; }
+        nav::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        .sidebar-pic {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            border: 3px solid var(--accent);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            /* Apply Breathing Animation */
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        nav .logo {
+            color: var(--text-light);
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+            width: 100%;
+        }
+
+        nav .logo span { color: var(--accent); }
+
+        nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+            padding-bottom: 2rem;
+        }
+        
+        nav a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: block;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-light);
+            background: rgba(255,255,255,0.1);
+            padding-left: 15px;
+            border-left: 4px solid var(--accent);
+        }
+
+        nav a i { margin-right: 10px; width: 20px; text-align: center; }
+
+        /* --- MAIN CONTENT WRAPPER --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* --- SECTIONS LOGIC --- */
+        section {
+            display: none;
+            padding: 4rem 6%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        section.active-section { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HEADER (HOME) --- */
+        header {
+            display: none;
+            background: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--text-light);
+            padding: 6rem 5% 6rem;
+            text-align: center;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        header.active-section { display: flex; animation: fadeIn 0.5s ease-in-out; }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .subtitle-container { max-width: 1400px; margin: 0 auto 2.5rem; }
+        
+        .subtitle {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-light);
+            font-weight: 400;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .subtitle.line-1 { font-size: 1.3rem; letter-spacing: 0.5px; }
+        .subtitle.line-2 { font-size: 1.1rem; color: var(--accent); font-weight: 600; }
+
+        .button-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn { display: inline-block; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .btn-primary { background: var(--accent); color: var(--primary); }
+        .btn-primary:hover { background: #fff; }
+        .btn-outline { border: 2px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: var(--primary); }
+
+        /* --- SHARED STYLES & CARD LIFT ANIMATION --- */
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .section-title h2 { font-size: 2.2rem; color: var(--primary); position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; display: block; width: 60px; height: 4px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
+
+        /* Common Card Styling */
+        .card, .edu-card, .skill-group, .project-card, .endorsement-card, .blog-card { 
+            background: white; 
+            padding: 1.5rem;
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth Lift Transition */
+        }
+
+        /* 3. Card Lift Effect on Hover */
+        .card:hover, .edu-card:hover, .skill-group:hover, .project-card:hover, .endorsement-card:hover, .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* Card Borders */
+        .card { border-top: 4px solid var(--accent); }
+        .project-card { border-top: 4px solid #6366f1; } /* Indigo */
+        .pub-card { border-top: 4px solid #f59e0b; } /* Amber */
+        .blog-card { border-top: 4px solid #8b5cf6; } /* Purple */
+        .endorsement-card { border-left: 4px solid #10b981; border-top: none; } /* Green Left */
+
+        .card h3, .blog-card h3 { color: var(--primary); font-size: 1.2rem; margin-bottom: 0.2rem; line-height: 1.3; }
+        .card h4 { color: #475569; font-size: 0.95rem; margin-bottom: 0.5rem; font-weight: 600; }
+        .card .date { color: var(--accent); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; display: block; }
+        .card ul { list-style: disc; margin-left: 1.2rem; flex-grow: 1; }
+        .card ul li { margin-bottom: 0.5rem; font-size: 0.9rem; color: #4b5563; }
+
+        /* --- GRIDS --- */
+        .experience-grid, .projects-grid, .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+        /* --- TAGS & LINKS --- */
+        .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 15px; margin-bottom: 10px; }
+        .tag { background: var(--bg-light); color: var(--text-dark); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+        
+        .project-link, .blog-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        .project-link:hover, .blog-link:hover { text-decoration: underline; }
+        .blog-link { color: #8b5cf6; margin-top: auto; }
+
+        /* --- ENDORSEMENTS --- */
+        .endorsement-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0; }
+        .endorsement-card .role { font-size: 0.9rem; color: #64748B; font-weight: 600; margin-bottom: 0.5rem; }
+        .endorsement-card .org { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; }
+        .linkedin-btn { 
+            margin-top: auto; 
+            display: inline-block; 
+            background: #0077b5; 
+            color: white; 
+            padding: 5px 15px; 
+            border-radius: 4px; 
+            font-size: 0.85rem; 
+            text-decoration: none; 
+            align-self: flex-start;
+        }
+        .linkedin-btn:hover { background: #005582; }
+
+        /* --- SKILLS & CERTIFICATIONS --- */
+        .cert-tags { display: flex; flex-direction: column; gap: 12px; margin-top: 1.5rem; width: 100%; align-items: flex-start; }
+        .cert-tag { background: var(--primary); color: var(--text-light); padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; text-align: left; border-left: 4px solid var(--accent); width: 100%; }
+        
+        .skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
+        .skill-group { flex: 1; min-width: 250px; }
+        .skill-group h3 { color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid var(--bg-light); padding-bottom: 10px; font-size: 1.3rem; }
+        .skill-list li { background: var(--bg-light); margin: 8px 0; padding: 10px 15px; border-radius: 6px; font-size: 0.95rem; display: flex; align-items: center; }
+        .skill-list li i { color: var(--accent); margin-right: 12px; width: 20px; text-align: center; font-size: 1.1rem; }
+
+        /* --- CONTACT SECTION --- */
+        #contact { min-height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 0 5%; }
+        #contact.active-section { display: flex; }
+        .contact-box { background: var(--primary); color: var(--text-light); padding: 4rem; border-radius: 12px; text-align: center; width: 100%; max-width: 900px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .contact-links { display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+        .contact-link { color: var(--text-light); font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .contact-link:hover { color: var(--accent); }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 1200px) {
+            .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            nav { width: 100%; height: auto; position: relative; flex-direction: row; align-items: center; justify-content: space-between; padding: 1rem; }
+            .sidebar-pic { width: 50px; height: 50px; margin-bottom: 0; border: 2px solid var(--accent); }
+            nav ul { display: none; }
+            nav .logo { margin: 0; border: 0; width: auto; padding-bottom: 0; text-align: left; margin-left: 10px; }
+            .main-content { margin-left: 0; }
+            header h1 { font-size: 2.2rem; }
+            .typewriter h1 { font-size: 1.8rem; white-space: normal; animation: none; border-right: none; } /* Disable typewriter on mobile for better fit */
+            .subtitle.line-1 { font-size: 1rem; }
+            .subtitle.line-2 { font-size: 0.9rem; }
+            section { padding: 2rem 5%; }
+            .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
+        
+        <div class="logo">AFIZ<span>LAWAL</span></div>
+        <ul>
+            <li><a onclick="showSection('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a onclick="showSection('about')"><i class="fas fa-user"></i> About</a></li>
+            <li><a onclick="showSection('education')"><i class="fas fa-graduation-cap"></i> Education</a></li>
+            <li><a onclick="showSection('experience')"><i class="fas fa-briefcase"></i> Experience</a></li>
+            <li><a onclick="showSection('skills')"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a onclick="showSection('projects')"><i class="fas fa-folder-open"></i> Projects</a></li>
+            <li><a onclick="showSection('publications')"><i class="fas fa-book"></i> Publications</a></li>
+            <li><a onclick="showSection('blog')"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a onclick="showSection('volunteering')"><i class="fas fa-hands-helping"></i> Volunteering</a></li>
+            <li><a onclick="showSection('endorsements')"><i class="fas fa-star"></i> Endorsements</a></li>
+            <li><a onclick="showSection('contact')"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        
+        <header id="home" class="active-section">
+            <div class="typewriter">
+                <h1>Hi, I'm Afiz Adewale Lawal</h1>
+            </div>
+            
+            <div class="subtitle-container">
+                <p class="subtitle line-1">Risk Management | Information Security | Compliance | Internal Audit | Continuous Improvement</p>
+                <p class="subtitle line-2">Strategic Business Partner | Driving Business Resilience Through Audit, Risk & Compliance | MBA '26</p>
+            </div>
+            
+            <div class="button-row">
+                <a onclick="showSection('contact')" class="btn btn-primary">Contact Me</a>
+                <a href="resume.pdf" target="_blank" class="btn btn-outline"><i class="fas fa-download"></i> Download Resume</a>
+            </div>
+        </header>
+
+        <section id="about">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto; text-align: justify; font-size: 1.1rem;">
+                <p>I am an experienced Audit, Governance, and Cybersecurity professional with a track record of strengthening control environments, managing complex audit engagements, and aligning enterprise risk with organizational objectives.</p>
+                <br>
+                <p>As a Lead Auditor at highly regulated organizations, I have directed assurance projects spanning the full spectrum of enterprise risk—from financial reporting and operational workflows to regulatory compliance and cybersecurity defense. I work extensively with frameworks such as NIST 800-53/82, NIST-CSF, ISO 27001, COBIT, CIS v8, PCI-DSS, and SOX, ensuring both compliance and operational resilience.</p>
+                <br>
+                <p>My expertise is underpinned by a dual degree from Baylor University—an MBA in Business Analytics and an MSIS in Cybersecurity. This unique academic background allows me to bridge the gap between business strategy and technical security. Holding the CISA, CFE, CIA, CISSP, and CCSP credentials, I combine this multidisciplinary knowledge to communicate risk effectively to stakeholders. My approach emphasizes value-added auditing—moving beyond compliance checklists to deliver insights that improve business performance, resilience, and governance maturity.</p>
+                <br>
+                <p style="text-align: center; color: var(--primary); font-weight: 600; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                    Specialties: Audit | Cybersecurity Governance | Enterprise Risk Management | Regulatory Compliance | Control Framework Design
+                </p>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="section-title">
+                <h2>Education & Certifications</h2>
+            </div>
+            <div class="grid-2">
+                <div class="edu-card">
+                    <i class="fas fa-graduation-cap" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                    <h3>Baylor University</h3>
+                    <p style="margin-bottom: 5px;"><strong>Master of Business Administration (Business Analytics)</strong></p>
+                    <p><strong>Master of Science in Information Systems (Cybersecurity)</strong></p>
+                    <p style="color: var(--text-muted); margin-top: 15px;">Expected Graduation: May 2026</p>
+                    <br>
+                    <h3>LAUTECH</h3>
+                    <p><strong>B.Tech Applied Economics</strong></p>
+                    <p style="color: var(--text-muted);">Graduated: 2012</p>
+                </div>
+                
+                <div class="edu-card">
+                    <i class="fas fa-certificate" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                    <h3>Professional Certifications</h3>
+                    <div class="cert-tags">
+                        <span class="cert-tag">Certified Information Systems Auditor (CISA)</span>
+                        <span class="cert-tag">Certified Fraud Examiner (CFE)</span>
+                        <span class="cert-tag">Certified Internal Auditor (CIA)</span>
+                        <span class="cert-tag">Certified Information Systems Security Professional (CISSP)</span>
+                        <span class="cert-tag">Certified Cloud Security Professional (CCSP)</span>
+                        <span class="cert-tag">ISO 27001 Lead Auditor</span>
+                        <span class="cert-tag">ISO 22301 Lead Auditor</span>
+                        <span class="cert-tag">ISO 20000-1 Lead Auditor</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="section-title">
+                <h2>Professional Experience</h2>
+            </div>
+            <div class="experience-grid">
+                <div class="card">
+                    <h3>Compliance Manager</h3>
+                    <h4>Baylor University (Intern)</h4>
+                    <span class="date">May 2025 - Present</span>
+                    <ul>
+                        <li>Revamped the University's Tax Compliance State Summary by restructuring multi-state filing data.</li>
+                        <li>Enhanced accuracy and external audit readiness by verifying 2023 overpayment applications.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Teaching Assistant</h3>
+                    <h4>Baylor University - IS</h4>
+                    <span class="date">Oct 2024 - Present</span>
+                    <ul>
+                        <li>Support lab instruction in Risk Management, NIST AI RMF, and ISO 27001 frameworks.</li>
+                        <li>Guide students in system modeling and secure application development using Lucidchart and Visio.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Senior Associate - IS Audit</h3>
+                    <h4>Wema Bank PLC</h4>
+                    <span class="date">Nov 2023 - June 2024</span>
+                    <ul>
+                        <li>Led risk-based IS audits assessing ITGC and Application controls (NIST, COBIT, ISO).</li>
+                        <li>Identified SQL Injection risks and unrevoked AD access, reducing privilege violations by 85%.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Associate - Compliance Audit</h3>
+                    <h4>CSCS PLC</h4>
+                    <span class="date">Aug 2022 - Oct 2023</span>
+                    <ul>
+                        <li>Led readiness activities for ISO 27001:2022 surveillance audits, ensuring successful certification retention.</li>
+                        <li>Executed audits across business divisions to assess process efficiency.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Senior Analyst - IAM</h3>
+                    <h4>TAJ BANK Limited</h4>
+                    <span class="date">Jan 2022 - July 2022</span>
+                    <ul>
+                        <li>Reduced access-related audit findings by 70% by implementing stricter entitlement controls.</li>
+                        <li>Managed user access reviews (SOX/FFIEC) via Active Directory and Okta.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Financial Analyst</h3>
+                    <h4>JAIZ Bank PLC</h4>
+                    <span class="date">Mar 2019 - Dec 2021</span>
+                    <ul>
+                        <li>Led GL audits uncovering misclassified expenses and reconciliation delays.</li>
+                        <li>Achieved 90% reduction in month-end close errors through restricted manual postings.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-title">
+                <h2>Technical Skills & Tools</h2>
+            </div>
+            <div class="skills-container">
+                <div class="skill-group">
+                    <h3><i class="fas fa-balance-scale"></i> GRC & Frameworks</h3>
+                    <ul class="skill-list">
+                        <li><i class="fas fa-check"></i> NIST & COBIT</li>
+                        <li><i class="fas fa-check"></i> ISO 27001 / 22301</li>
+                        <li><i class="fas fa-check"></i> SOX & PCI DSS</li>
+                        <li><i class="fas fa-check"></i> HIPAA & FFIEC</li>
+                    </ul>
+                </div>
+                <div class="skill-group">
+                    <h3><i class="fas fa-shield-alt"></i> Security Tools</h3>
+                    <ul class="skill-list">
+                        <li><i class="fas fa-chart-line"></i> Splunk & Wireshark</li>
+                        <li><i class="fas fa-eye"></i> Nessus & Nmap</li>
+                        <li><i class="fas fa-bug"></i> Burp Suite & Kali Linux</li>
+                        <li><i class="fas fa-laptop-code"></i> IBM AppScan</li>
+                    </ul>
+                </div>
+                <div class="skill-group">
+                    <h3><i class="fas fa-code"></i> Programming & Data</h3>
+                    <ul class="skill-list">
+                        <li><span><i class="fab fa-python"></i> Python</span> &nbsp;|&nbsp; <span><i class="fas fa-database"></i> SQL</span></li>
+                        <li><span><i class="fas fa-chart-bar"></i> Tableau</span> &nbsp;|&nbsp; <span><i class="fas fa-chart-pie"></i> PowerBI</span></li>
+                        <li><span><i class="fab fa-linux"></i> Linux</span> &nbsp;|&nbsp; <span><i class="fab fa-windows"></i> Windows</span></li>
+                        <li><span><i class="fab fa-html5"></i> HTML</span> &nbsp;|&nbsp; <span><i class="fab fa-js"></i> JavaScript</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="section-title">
+                <h2>Key Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Automated User Access Review System</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Developed a Python script to automate the reconciliation of Active Directory users against HR records, reducing manual review time by 60%.</p>
+                    <div class="project-tags"><span class="tag">Python</span><span class="tag">IAM</span><span class="tag">Automation</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>ISO 27001 Readiness Assessment</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Led a mock audit and gap analysis for a financial institution, identifying 12 critical non-conformities prior to external certification.</p>
+                    <div class="project-tags"><span class="tag">ISO 27001</span><span class="tag">Audit</span><span class="tag">Compliance</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>Cloud Security Posture Review</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Conducted a configuration review of AWS S3 buckets and IAM roles, remediating public access risks for sensitive data.</p>
+                    <div class="project-tags"><span class="tag">AWS</span><span class="tag">Cloud Security</span><span class="tag">Risk</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>Vendor Risk Management Dashboard</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Designed a Tableau dashboard to track third-party vendor compliance scores, expiring contracts, and security assessments.</p>
+                    <div class="project-tags"><span class="tag">Tableau</span><span class="tag">VRM</span><span class="tag">Data Viz</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>Internal Audit Data Analytics Suite</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Created SQL queries to identify duplicate vendor payments and split-transaction fraud indicators across 50,000+ records.</p>
+                    <div class="project-tags"><span class="tag">SQL</span><span class="tag">Fraud Detection</span><span class="tag">Analytics</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>NIST CSF Implementation Roadmap</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Developed a strategic roadmap to align an organization's legacy security controls with the NIST Cybersecurity Framework.</p>
+                    <div class="project-tags"><span class="tag">NIST CSF</span><span class="tag">Strategy</span><span class="tag">Governance</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>SQL Injection Vulnerability Scanner</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Built a basic web scanner in Python to test internal web applications for common SQLi vulnerabilities.</p>
+                    <div class="project-tags"><span class="tag">Python</span><span class="tag">AppSec</span><span class="tag">PenTesting</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>Business Continuity Simulation</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Coordinated a tabletop exercise for a ransomware scenario to test the effectiveness of the Incident Response Plan.</p>
+                    <div class="project-tags"><span class="tag">BCP/DR</span><span class="tag">Incident Response</span><span class="tag">Ops</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>Fraud Detection Algorithm</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Utilized machine learning libraries (Scikit-Learn) to model transactional patterns and flag anomalies in credit card data.</p>
+                    <div class="project-tags"><span class="tag">ML</span><span class="tag">Python</span><span class="tag">Fraud</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+                <div class="project-card">
+                    <h3>API Security Audit Framework</h3>
+                    <p style="font-size: 0.9rem; color: #4b5563;">Established a testing framework using Postman and Burp Suite to validate proper authentication in REST APIs.</p>
+                    <div class="project-tags"><span class="tag">API Security</span><span class="tag">Burp Suite</span><span class="tag">Audit</span></div>
+                    <a href="https://github.com/Afizcol" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="publications">
+            <div class="section-title">
+                <h2>Publications & Research</h2>
+            </div>
+            <div class="experience-grid">
+                <div class="card pub-card">
+                    <h3>The Role of AI in Modern Auditing</h3>
+                    <h4 style="margin-bottom: 5px;">International Journal of Computer Auditing</h4>
+                    <span class="date">2025</span>
+                    <a href="#" style="color: var(--accent); font-weight: 600; margin-top: auto;">View Publication <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="card pub-card">
+                    <h3>Data Privacy in Fintech</h3>
+                    <h4 style="margin-bottom: 5px;">Journal of Information Systems Security</h4>
+                    <span class="date">2024</span>
+                    <a href="#" style="color: var(--accent); font-weight: 600; margin-top: auto;">View Publication <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="card pub-card">
+                    <h3>Zero Trust Architecture: A Paradigm Shift</h3>
+                    <h4 style="margin-bottom: 5px;">ISACA Journal</h4>
+                    <span class="date">2023</span>
+                    <a href="#" style="color: var(--accent); font-weight: 600; margin-top: auto;">View Publication <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog">
+            <div class="section-title">
+                <h2>Blog & Industry News</h2>
+            </div>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <h3>AI-Driven Cyber Attacks</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">How artificial intelligence is reshaping the threat landscape in 2025.</p>
+                    <a href="https://thehackernews.com/search/label/AI" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Zero Trust Architecture</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Why perimeter-based security is dead and identity is the new firewall.</p>
+                    <a href="https://www.csoonline.com/toc/zero-trust/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Ransomware Trends</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Analysis of the latest ransomware tactics and extortion methods.</p>
+                    <a href="https://www.bleepingcomputer.com/tag/ransomware/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>NIST 2.0 Framework</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Understanding the key updates in the NIST Cybersecurity Framework 2.0.</p>
+                    <a href="https://www.nist.gov/cyberframework" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Cloud Misconfigurations</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Common cloud security failures and how to prevent them.</p>
+                    <a href="https://www.darkreading.com/cloud" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Third-Party Risk</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Managing supply chain risks in an interconnected digital ecosystem.</p>
+                    <a href="https://www.isaca.org/resources" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Phishing Prevention</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">The human element of security: Strategies to stop social engineering.</p>
+                    <a href="https://krebsonsecurity.com/category/phishing/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>API Security Best Practices</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Securing REST and GraphQL APIs against the OWASP Top 10.</p>
+                    <a href="https://owasp.org/www-project-api-security/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Regulatory Compliance</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Updates on SEC rules, GDPR, and global privacy regulations.</p>
+                    <a href="https://iapp.org/news/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Blockchain Forensics</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Investigating crypto fraud and securing decentralized applications.</p>
+                    <a href="https://www.coindesk.com/policy/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Insider Threat Mitigation</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Detecting and responding to malicious or accidental insider risks.</p>
+                    <a href="https://www.cisa.gov/topics/physical-security/insider-threat-mitigation" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>IoT Vulnerabilities</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Securing the Internet of Things against botnets and unauthorized access.</p>
+                    <a href="https://thehackernews.com/search/label/IoT" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Cyber Insurance</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">The evolving market of cyber insurance and coverage requirements.</p>
+                    <a href="https://www.insurancejournal.com/news/national/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Mobile App Security</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Protecting sensitive data in iOS and Android applications.</p>
+                    <a href="https://www.wired.com/tag/mobile-security/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>DevSecOps Culture</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Shifting security left: Integrating security into the CI/CD pipeline.</p>
+                    <a href="https://devops.com/category/devsecops/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Quantum Computing Risks</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Preparing cryptography for the post-quantum era.</p>
+                    <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Social Engineering</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Psychological manipulation tactics used by modern attackers.</p>
+                    <a href="https://thehackernews.com/search/label/Social%20Engineering" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Critical Infrastructure</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Protecting ICS and SCADA systems from nation-state actors.</p>
+                    <a href="https://www.cisa.gov/topics/critical-infrastructure-security-and-resilience" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Privacy vs Security</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">Understanding the distinct but overlapping domains of data protection.</p>
+                    <a href="https://iapp.org/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="blog-card">
+                    <h3>Future of IS Audit</h3>
+                    <p style="font-size:0.9rem; color:#64748B;">How automation and real-time monitoring are changing the audit profession.</p>
+                    <a href="https://www.theiia.org/en/content/articles/" target="_blank" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="volunteering">
+            <div class="section-title">
+                <h2>Volunteering</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card" style="border-top: 4px solid #ef4444;"> 
+                    <h3>Red Cross Society</h3>
+                    <h4>Volunteer</h4>
+                    <span class="date">2020 - Present</span>
+                    <ul>
+                        <li>Assisted in disaster response logistics and community support initiatives.</li>
+                        <li>Provided emergency relief coordination during local crisis events.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top: 4px solid #15803d;"> 
+                    <h3>Baylor Cybersecurity Club</h3>
+                    <h4>Member / Officer</h4>
+                    <span class="date">2024 - Present</span>
+                    <ul>
+                        <li>Organized Capture The Flag (CTF) competitions for student engagement.</li>
+                        <li>Mentored undergraduate students on network security fundamentals.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="endorsements">
+            <div class="section-title">
+                <h2>Endorsements</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card endorsement-card">
+                    <h3>John Doe</h3>
+                    <p class="role">Chief Information Security Officer</p>
+                    <p class="org">Tech Solutions Inc.</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Jane Smith</h3>
+                    <p class="role">Director of Internal Audit</p>
+                    <p class="org">Global Finance Corp</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Michael Brown</h3>
+                    <p class="role">Senior Manager, Risk</p>
+                    <p class="org">Wema Bank PLC</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Sarah Johnson</h3>
+                    <p class="role">Head of Compliance</p>
+                    <p class="org">CSCS PLC</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>David Wilson</h3>
+                    <p class="role">VP of Engineering</p>
+                    <p class="org">Innovate Tech</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Emily Davis</h3>
+                    <p class="role">Audit Committee Chair</p>
+                    <p class="org">Baylor University</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Robert Miller</h3>
+                    <p class="role">Security Architect</p>
+                    <p class="org">CyberDefend</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+                <div class="card endorsement-card">
+                    <h3>Lisa Taylor</h3>
+                    <p class="role">Data Privacy Officer</p>
+                    <p class="org">SecureData Ltd</p>
+                    <a href="#" class="linkedin-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-box">
+                <h2>Get In Touch</h2>
+                <div class="contact-links">
+                    <a href="mailto:hafizadewale@yahoo.com" class="contact-link"><i class="fas fa-envelope"></i> hafizadewale@yahoo.com</a>
+                    <a href="tel:2544009604" class="contact-link"><i class="fas fa-phone"></i> 254-400-9604</a>
+                    <a href="https://www.linkedin.com/in/hafizlawal" target="_blank" class="contact-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://github.com/Afizcol" target="_blank" class="contact-link"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const allSections = document.querySelectorAll('section, header');
+            allSections.forEach(section => {
+                section.classList.remove('active-section');
+                section.style.display = 'none';
+            });
+
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                // Flex display for Home and Contact to allow centering
+                activeSection.style.display = (sectionId === 'home' || sectionId === 'contact') ? 'flex' : 'block';
+                setTimeout(() => {
+                    activeSection.classList.add('active-section');
+                }, 10);
+            }
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick').includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+            
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
