@@ -56,7 +56,6 @@
             overflow-y: auto;
         }
 
-        /* Scrollbar styles */
         nav::-webkit-scrollbar { width: 6px; }
         nav::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
 
@@ -115,7 +114,8 @@
         nav a i { margin-right: 10px; width: 20px; text-align: center; }
 
         /* Menu Toggle (Hidden on Desktop) */
-        .menu-toggle { display: none; color: var(--text-light); font-size: 2rem; cursor: pointer; padding: 15px; }
+        .menu-toggle { display: none; color: var(--text-light); font-size: 2.2rem; cursor: pointer; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; }
+        .menu-toggle:active { background-color: rgba(255,255,255,0.1); }
 
         /* --- MAIN CONTENT WRAPPER --- */
         .main-content {
@@ -219,6 +219,20 @@
         .contact-box { background: var(--primary); color: var(--text-light); padding: 4rem; border-radius: 12px; text-align: center; width: 100%; max-width: 900px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .contact-links { display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
         .contact-link { color: var(--text-light); font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* --- ANIMATIONS --- */
+        @keyframes breathe {
+            0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 10px 20px rgba(20, 184, 166, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
+        .typewriter { display: inline-block; }
+        .typewriter h1 {
+            overflow: hidden; border-right: .10em solid var(--accent); white-space: nowrap; margin: 0 auto;
+            letter-spacing: .05em; animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; max-width: fit-content;
+        }
 
         /* --- MOBILE RESPONSIVE FIXES --- */
         @media (max-width: 1200px) {
@@ -258,6 +272,7 @@
             .main-content { margin-left: 0; padding-top: 70px; }
             header { padding: 4rem 5%; min-height: auto; }
             header h1 { font-size: 2rem; margin-top: 1rem; }
+            .typewriter h1 { white-space: normal; animation: none; border-right: none; text-align: center; }
             .subtitle.line-1 { font-size: 1rem; }
             .subtitle.line-2 { font-size: 0.9rem; }
             .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: 1fr; }
@@ -272,7 +287,7 @@
         <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
         <div class="logo">AFIZ<span>LAWAL</span></div>
         
-        <i class="fas fa-bars menu-toggle" onclick="toggleMobileMenu()"></i>
+        <i class="fas fa-bars menu-toggle" onclick="document.getElementById('nav-menu').classList.toggle('active')"></i>
 
         <ul id="nav-menu">
             <li><a onclick="selectMenuItem('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -292,7 +307,7 @@
     <div class="main-content">
         
         <header id="home" class="active-section">
-            <h1>Hi, I'm Afiz Adewale Lawal</h1>
+            <div class="typewriter"><h1>Hi, I'm Afiz Adewale Lawal</h1></div>
             
             <div class="subtitle-container">
                 <p class="subtitle line-1">Risk Management | Information Security | Compliance | Internal Audit | Continuous Improvement</p>
@@ -452,16 +467,6 @@
     </div>
 
     <script>
-        // Simple Global Function - Easiest for debugging
-        function toggleMobileMenu() {
-            var menu = document.getElementById("nav-menu");
-            if (menu.classList.contains("active")) {
-                menu.classList.remove("active");
-            } else {
-                menu.classList.add("active");
-            }
-        }
-
         function selectMenuItem(sectionId) {
             // Close the menu on mobile after clicking
             var menu = document.getElementById("nav-menu");
@@ -478,11 +483,21 @@
 
             var activeSection = document.getElementById(sectionId);
             if (activeSection) {
+                // Flex display for Home and Contact to allow centering
                 activeSection.style.display = (sectionId === 'home' || sectionId === 'contact') ? 'flex' : 'block';
                 setTimeout(() => {
                     activeSection.classList.add('active-section');
                 }, 10);
             }
+
+            // Update Active Link State
+            var navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick').includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
             
             window.scrollTo(0,0);
         }
