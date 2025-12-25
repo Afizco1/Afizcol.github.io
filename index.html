@@ -90,7 +90,7 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             animation: breathe 4s ease-in-out infinite;
-            background-color: #fff; /* White background in case image loads slow */
+            background-color: #fff;
         }
 
         nav .logo {
@@ -247,30 +247,36 @@
         }
 
         @media (max-width: 768px) {
-            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; padding: 0.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 2000; }
-            .sidebar-pic { display: none; }
-            nav .logo { margin: 0; border: 0; width: auto; padding: 0; text-align: left; font-size: 1.1rem; }
-            .menu-toggle { display: block; }
+            /* 1. FIXED NAV BAR */
+            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 5000; }
             
+            /* 2. IMAGE NOW VISIBLE ON MOBILE */
+            .sidebar-pic { display: block; width: 40px; height: 40px; margin: 0; border: 2px solid var(--accent); }
+            
+            nav .logo { margin: 0; border: 0; width: auto; padding: 0; text-align: left; font-size: 1.1rem; margin-left: 10px; }
+            .menu-toggle { display: block; margin-left: auto; }
+            
+            /* 3. MENU DRAWER STYLES */
             nav ul { 
-                display: none; 
+                display: none; /* Hidden by default */
+                flex-direction: column;
                 position: absolute; 
                 top: 100%; 
                 left: 0; 
                 width: 100%; 
                 background: var(--primary); 
-                padding: 1rem 0;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                padding: 1.5rem 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                 border-top: 1px solid rgba(255,255,255,0.1);
-                z-index: 1999;
+                z-index: 4999;
             }
             
-            /* The 'active' class makes it show */
-            nav ul.active { display: flex; }
+            /* Class to force menu open */
+            nav ul.active { display: flex !important; }
 
-            .main-content { margin-left: 0; padding-top: 60px; }
+            .main-content { margin-left: 0; padding-top: 70px; }
             header { padding: 4rem 5%; min-height: auto; }
-            header h1 { font-size: 2rem; margin-top: 2rem; }
+            header h1 { font-size: 2rem; margin-top: 1rem; }
             .typewriter h1 { white-space: normal; animation: none; border-right: none; text-align: center; }
             .subtitle.line-1 { font-size: 1rem; }
             .subtitle.line-2 { font-size: 0.9rem; }
@@ -286,7 +292,7 @@
         <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
         <div class="logo">AFIZ<span>LAWAL</span></div>
         
-        <i class="fas fa-bars menu-toggle"></i>
+        <i class="fas fa-bars menu-toggle" id="menu-btn"></i>
 
         <ul id="nav-menu">
             <li><a onclick="selectMenuItem('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -469,16 +475,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.querySelector('.menu-toggle');
+            const menuToggle = document.getElementById('menu-btn');
             const navMenu = document.getElementById('nav-menu');
 
             if (menuToggle && navMenu) {
+                // Toggle Menu when clicking Hamburger
                 menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent the click from bubbling up
+                    e.stopPropagation(); 
                     navMenu.classList.toggle('active');
                 });
 
-                // Close menu when clicking anywhere else on the page
+                // Close menu when clicking outside
                 document.addEventListener('click', (e) => {
                     if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
                         navMenu.classList.remove('active');
@@ -503,7 +510,6 @@
 
             const activeSection = document.getElementById(sectionId);
             if (activeSection) {
-                // Flex display for Home and Contact to allow centering
                 activeSection.style.display = (sectionId === 'home' || sectionId === 'contact') ? 'flex' : 'block';
                 setTimeout(() => {
                     activeSection.classList.add('active-section');
