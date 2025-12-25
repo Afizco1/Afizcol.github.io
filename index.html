@@ -114,7 +114,16 @@
         nav a i { margin-right: 10px; width: 20px; text-align: center; }
 
         /* Menu Toggle (Hidden on Desktop) */
-        .menu-toggle { display: none; color: var(--text-light); font-size: 2.2rem; cursor: pointer; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; }
+        .menu-toggle { 
+            display: none; 
+            color: var(--text-light); 
+            font-size: 2.2rem; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 5px;
+            background: none;
+        }
         .menu-toggle:active { background-color: rgba(255,255,255,0.1); }
 
         /* --- MAIN CONTENT WRAPPER --- */
@@ -241,22 +250,49 @@
 
         @media (max-width: 768px) {
             /* 1. FIXED NAV BAR WITH HIGH Z-INDEX */
-            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 9999; }
+            nav { 
+                width: 100%; 
+                height: auto; 
+                position: fixed; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+                padding: 0.8rem 1.5rem; 
+                border-bottom: 1px solid rgba(255,255,255,0.1); 
+                z-index: 9999; 
+            }
             
             /* 2. IMAGE NOW VISIBLE ON MOBILE */
-            .sidebar-pic { display: block; width: 40px; height: 40px; margin: 0; border: 2px solid var(--accent); }
+            .sidebar-pic { 
+                display: block; 
+                width: 40px; 
+                height: 40px; 
+                margin: 0; 
+                border: 2px solid var(--accent); 
+            }
             
-            nav .logo { margin: 0; border: 0; width: auto; padding: 0; text-align: left; font-size: 1.1rem; margin-left: 10px; }
+            nav .logo { 
+                margin: 0; 
+                border: 0; 
+                width: auto; 
+                padding: 0; 
+                text-align: left; 
+                font-size: 1.1rem; 
+                margin-left: 10px; 
+            }
             
             /* 3. BIGGER CLICK AREA FOR MENU ICON */
-            .menu-toggle { display: block; margin-left: auto; }
+            .menu-toggle { 
+                display: block; 
+                margin-left: auto; 
+            }
             
             /* 4. MENU DRAWER STYLES */
             nav ul { 
                 display: none; /* Hidden by default */
                 flex-direction: column;
-                position: absolute; 
-                top: 100%; 
+                position: fixed; 
+                top: 58px; /* Height of nav bar */
                 left: 0; 
                 width: 100%; 
                 background: var(--primary); 
@@ -264,15 +300,47 @@
                 box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                 border-top: 1px solid rgba(255,255,255,0.1);
                 z-index: 9998;
+                max-height: calc(100vh - 58px);
+                overflow-y: auto;
             }
             
             /* Class to force menu open */
-            nav ul.active { display: flex !important; }
+            nav ul.active { 
+                display: flex !important; 
+            }
 
-            .main-content { margin-left: 0; padding-top: 70px; }
-            header { padding: 4rem 5%; min-height: auto; }
-            header h1 { font-size: 2rem; margin-top: 1rem; }
-            .typewriter h1 { white-space: normal; animation: none; border-right: none; text-align: center; }
+            /* Ensure menu items are clickable */
+            nav ul li {
+                padding: 0 1.5rem;
+            }
+
+            nav ul li a {
+                padding: 12px;
+                display: block;
+            }
+
+            .main-content { 
+                margin-left: 0; 
+                padding-top: 70px; 
+            }
+            
+            header { 
+                padding: 4rem 5%; 
+                min-height: auto; 
+            }
+            
+            header h1 { 
+                font-size: 2rem; 
+                margin-top: 1rem; 
+            }
+            
+            .typewriter h1 { 
+                white-space: normal; 
+                animation: none; 
+                border-right: none; 
+                text-align: center; 
+            }
+            
             .subtitle.line-1 { font-size: 1rem; }
             .subtitle.line-2 { font-size: 0.9rem; }
             .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: 1fr; }
@@ -287,20 +355,22 @@
         <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
         <div class="logo">AFIZ<span>LAWAL</span></div>
         
-        <i class="fas fa-bars menu-toggle" onclick="document.getElementById('nav-menu').classList.toggle('active')"></i>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
 
         <ul id="nav-menu">
-            <li><a onclick="selectMenuItem('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a onclick="selectMenuItem('about')"><i class="fas fa-user"></i> About</a></li>
-            <li><a onclick="selectMenuItem('education')"><i class="fas fa-graduation-cap"></i> Education</a></li>
-            <li><a onclick="selectMenuItem('experience')"><i class="fas fa-briefcase"></i> Experience</a></li>
-            <li><a onclick="selectMenuItem('skills')"><i class="fas fa-code"></i> Skills</a></li>
-            <li><a onclick="selectMenuItem('projects')"><i class="fas fa-folder-open"></i> Projects</a></li>
-            <li><a onclick="selectMenuItem('publications')"><i class="fas fa-book"></i> Publications</a></li>
-            <li><a onclick="selectMenuItem('blog')"><i class="fas fa-blog"></i> Blog</a></li>
-            <li><a onclick="selectMenuItem('volunteering')"><i class="fas fa-hands-helping"></i> Volunteering</a></li>
-            <li><a onclick="selectMenuItem('endorsements')"><i class="fas fa-star"></i> Endorsements</a></li>
-            <li><a onclick="selectMenuItem('contact')"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="#" data-section="home" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" data-section="about" class="nav-link"><i class="fas fa-user"></i> About</a></li>
+            <li><a href="#" data-section="education" class="nav-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
+            <li><a href="#" data-section="experience" class="nav-link"><i class="fas fa-briefcase"></i> Experience</a></li>
+            <li><a href="#" data-section="skills" class="nav-link"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a href="#" data-section="projects" class="nav-link"><i class="fas fa-folder-open"></i> Projects</a></li>
+            <li><a href="#" data-section="publications" class="nav-link"><i class="fas fa-book"></i> Publications</a></li>
+            <li><a href="#" data-section="blog" class="nav-link"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="#" data-section="volunteering" class="nav-link"><i class="fas fa-hands-helping"></i> Volunteering</a></li>
+            <li><a href="#" data-section="endorsements" class="nav-link"><i class="fas fa-star"></i> Endorsements</a></li>
+            <li><a href="#" data-section="contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
     </nav>
 
@@ -315,7 +385,7 @@
             </div>
             
             <div class="button-row">
-                <a onclick="selectMenuItem('contact')" class="btn btn-primary">Contact Me</a>
+                <a href="#" data-section="contact" class="btn btn-primary nav-link">Contact Me</a>
                 <a href="resume.pdf" target="_blank" class="btn btn-outline"><i class="fas fa-download"></i> Download Resume</a>
             </div>
         </header>
@@ -467,40 +537,72 @@
     </div>
 
     <script>
-        function selectMenuItem(sectionId) {
-            // Close the menu on mobile after clicking
-            var menu = document.getElementById("nav-menu");
-            if (menu) {
-                menu.classList.remove("active");
-            }
+        // Get all navigation elements
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-            // Show Section Logic
-            var allSections = document.querySelectorAll('section, header');
+        // Toggle menu on mobile
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+        });
+
+        // Handle navigation link clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const sectionId = this.getAttribute('data-section');
+                
+                // Navigate to section
+                selectMenuItem(sectionId);
+                
+                // Close mobile menu
+                navMenu.classList.remove('active');
+                
+                // Update active state
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Section navigation function
+        function selectMenuItem(sectionId) {
+            // Hide all sections
+            const allSections = document.querySelectorAll('section, header');
             allSections.forEach(section => {
                 section.classList.remove('active-section');
                 section.style.display = 'none';
             });
 
-            var activeSection = document.getElementById(sectionId);
+            // Show selected section
+            const activeSection = document.getElementById(sectionId);
             if (activeSection) {
-                // Flex display for Home and Contact to allow centering
+                // Use flex for home and contact, block for others
                 activeSection.style.display = (sectionId === 'home' || sectionId === 'contact') ? 'flex' : 'block';
+                
+                // Add active class after a brief delay for animation
                 setTimeout(() => {
                     activeSection.classList.add('active-section');
                 }, 10);
             }
 
-            // Update Active Link State
-            var navLinks = document.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick').includes(sectionId)) {
-                    link.classList.add('active');
-                }
-            });
-            
-            window.scrollTo(0,0);
+            // Scroll to top
+            window.scrollTo(0, 0);
         }
+
+        // Initialize - show home section on load
+        document.addEventListener('DOMContentLoaded', function() {
+            selectMenuItem('home');
+        });
     </script>
 </body>
 </html>
