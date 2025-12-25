@@ -90,6 +90,7 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             animation: breathe 4s ease-in-out infinite;
+            background-color: #fff; /* White background in case image loads slow */
         }
 
         nav .logo {
@@ -135,7 +136,7 @@
         nav a i { margin-right: 10px; width: 20px; text-align: center; }
 
         /* Menu Toggle (Hidden on Desktop) */
-        .menu-toggle { display: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; }
+        .menu-toggle { display: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; padding: 10px; }
 
         /* --- MAIN CONTENT WRAPPER --- */
         .main-content {
@@ -201,7 +202,6 @@
             transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15);
         }
         
-        /* Card Colors */
         .card { border-top: 4px solid var(--accent); }
         .project-card { border-top: 4px solid #6366f1; }
         .pub-card { border-top: 4px solid #f59e0b; }
@@ -217,19 +217,16 @@
         .experience-grid, .projects-grid, .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
 
-        /* Tags & Links */
         .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 15px; margin-bottom: 10px; }
         .tag { background: var(--bg-light); color: var(--text-dark); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
         .project-link, .blog-link { display: inline-block; margin-top: 5px; color: var(--accent); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
         .blog-link { color: #8b5cf6; margin-top: auto; }
 
-        /* Endorsements */
         .endorsement-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0; }
         .endorsement-card .role { font-size: 0.9rem; color: #64748B; font-weight: 600; margin-bottom: 0.5rem; }
         .endorsement-card .org { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; }
         .linkedin-btn { margin-top: auto; display: inline-block; background: #0077b5; color: white; padding: 5px 15px; border-radius: 4px; font-size: 0.85rem; text-decoration: none; align-self: flex-start; }
 
-        /* Skills & Certs */
         .cert-tags { display: flex; flex-direction: column; gap: 12px; margin-top: 1.5rem; width: 100%; align-items: flex-start; }
         .cert-tag { background: var(--primary); color: var(--text-light); padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; text-align: left; border-left: 4px solid var(--accent); width: 100%; }
         .skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
@@ -238,7 +235,6 @@
         .skill-list li { background: var(--bg-light); margin: 8px 0; padding: 10px 15px; border-radius: 6px; font-size: 0.95rem; display: flex; align-items: center; }
         .skill-list li i { color: var(--accent); margin-right: 12px; width: 20px; text-align: center; font-size: 1.1rem; }
 
-        /* Contact */
         #contact { min-height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 0 5%; }
         #contact.active-section { display: flex; }
         .contact-box { background: var(--primary); color: var(--text-light); padding: 4rem; border-radius: 12px; text-align: center; width: 100%; max-width: 900px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -251,19 +247,11 @@
         }
 
         @media (max-width: 768px) {
-            /* Navbar becomes a top bar */
-            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            
-            /* Hide profile pic on mobile nav to save space */
+            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; padding: 0.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 2000; }
             .sidebar-pic { display: none; }
-            
-            /* Logo alignment */
             nav .logo { margin: 0; border: 0; width: auto; padding: 0; text-align: left; font-size: 1.1rem; }
-            
-            /* Hamburger Menu */
             .menu-toggle { display: block; }
             
-            /* Menu Links (Hidden by default) */
             nav ul { 
                 display: none; 
                 position: absolute; 
@@ -274,33 +262,19 @@
                 padding: 1rem 0;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.2);
                 border-top: 1px solid rgba(255,255,255,0.1);
+                z-index: 1999;
             }
             
-            /* Class to show menu when clicked */
+            /* The 'active' class makes it show */
             nav ul.active { display: flex; }
 
-            /* Main Content Adjustments */
-            .main-content { margin-left: 0; padding-top: 60px; /* Space for fixed nav */ }
-            
-            /* Header Adjustments */
+            .main-content { margin-left: 0; padding-top: 60px; }
             header { padding: 4rem 5%; min-height: auto; }
             header h1 { font-size: 2rem; margin-top: 2rem; }
-            
-            /* Disable Typewriter on Mobile to prevent overflow */
-            .typewriter h1 { 
-                white-space: normal; 
-                animation: none; 
-                border-right: none; 
-                text-align: center;
-            }
-
+            .typewriter h1 { white-space: normal; animation: none; border-right: none; text-align: center; }
             .subtitle.line-1 { font-size: 1rem; }
             .subtitle.line-2 { font-size: 0.9rem; }
-            
-            /* Stack grids */
             .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: 1fr; }
-            
-            /* Adjust padding */
             section { padding: 3rem 5%; }
             .contact-box { padding: 2rem; }
         }
@@ -312,7 +286,7 @@
         <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
         <div class="logo">AFIZ<span>LAWAL</span></div>
         
-        <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+        <i class="fas fa-bars menu-toggle"></i>
 
         <ul id="nav-menu">
             <li><a onclick="selectMenuItem('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -494,15 +468,31 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('nav-menu');
-            menu.classList.toggle('active');
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the click from bubbling up
+                    navMenu.classList.toggle('active');
+                });
+
+                // Close menu when clicking anywhere else on the page
+                document.addEventListener('click', (e) => {
+                    if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                        navMenu.classList.remove('active');
+                    }
+                });
+            }
+        });
 
         function selectMenuItem(sectionId) {
             // Close the menu on mobile after clicking
-            const menu = document.getElementById('nav-menu');
-            menu.classList.remove('active');
+            const navMenu = document.getElementById('nav-menu');
+            if (navMenu) {
+                navMenu.classList.remove('active');
+            }
 
             // Show Section Logic
             const allSections = document.querySelectorAll('section, header');
