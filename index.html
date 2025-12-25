@@ -39,27 +39,6 @@
         a { text-decoration: none; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- ANIMATIONS --- */
-        @keyframes breathe {
-            0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 10px 20px rgba(20, 184, 166, 0.4); }
-            100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        }
-
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
-
-        .typewriter { display: inline-block; }
-        .typewriter h1 {
-            overflow: hidden;
-            border-right: .10em solid var(--accent);
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .05em;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-            max-width: fit-content;
-        }
-
         /* --- SIDEBAR NAVIGATION --- */
         nav {
             background: var(--primary);
@@ -77,6 +56,7 @@
             overflow-y: auto;
         }
 
+        /* Scrollbar styles */
         nav::-webkit-scrollbar { width: 6px; }
         nav::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
 
@@ -89,7 +69,6 @@
             border: 3px solid var(--accent);
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            animation: breathe 4s ease-in-out infinite;
             background-color: #fff;
         }
 
@@ -136,7 +115,7 @@
         nav a i { margin-right: 10px; width: 20px; text-align: center; }
 
         /* Menu Toggle (Hidden on Desktop) */
-        .menu-toggle { display: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; padding: 10px; }
+        .menu-toggle { display: none; color: var(--text-light); font-size: 2rem; cursor: pointer; padding: 15px; }
 
         /* --- MAIN CONTENT WRAPPER --- */
         .main-content {
@@ -247,16 +226,18 @@
         }
 
         @media (max-width: 768px) {
-            /* 1. FIXED NAV BAR */
-            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 5000; }
+            /* 1. FIXED NAV BAR WITH HIGH Z-INDEX */
+            nav { width: 100%; height: auto; position: fixed; flex-direction: row; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 9999; }
             
             /* 2. IMAGE NOW VISIBLE ON MOBILE */
             .sidebar-pic { display: block; width: 40px; height: 40px; margin: 0; border: 2px solid var(--accent); }
             
             nav .logo { margin: 0; border: 0; width: auto; padding: 0; text-align: left; font-size: 1.1rem; margin-left: 10px; }
+            
+            /* 3. BIGGER CLICK AREA FOR MENU ICON */
             .menu-toggle { display: block; margin-left: auto; }
             
-            /* 3. MENU DRAWER STYLES */
+            /* 4. MENU DRAWER STYLES */
             nav ul { 
                 display: none; /* Hidden by default */
                 flex-direction: column;
@@ -268,7 +249,7 @@
                 padding: 1.5rem 0;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                 border-top: 1px solid rgba(255,255,255,0.1);
-                z-index: 4999;
+                z-index: 9998;
             }
             
             /* Class to force menu open */
@@ -277,7 +258,6 @@
             .main-content { margin-left: 0; padding-top: 70px; }
             header { padding: 4rem 5%; min-height: auto; }
             header h1 { font-size: 2rem; margin-top: 1rem; }
-            .typewriter h1 { white-space: normal; animation: none; border-right: none; text-align: center; }
             .subtitle.line-1 { font-size: 1rem; }
             .subtitle.line-2 { font-size: 0.9rem; }
             .experience-grid, .projects-grid, .blog-grid, .grid-2 { grid-template-columns: 1fr; }
@@ -292,7 +272,7 @@
         <img src="profile.jpg" alt="Afiz Lawal" class="sidebar-pic">
         <div class="logo">AFIZ<span>LAWAL</span></div>
         
-        <i class="fas fa-bars menu-toggle" id="menu-btn"></i>
+        <i class="fas fa-bars menu-toggle" onclick="toggleMobileMenu()"></i>
 
         <ul id="nav-menu">
             <li><a onclick="selectMenuItem('home')" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -312,9 +292,7 @@
     <div class="main-content">
         
         <header id="home" class="active-section">
-            <div class="typewriter">
-                <h1>Hi, I'm Afiz Adewale Lawal</h1>
-            </div>
+            <h1>Hi, I'm Afiz Adewale Lawal</h1>
             
             <div class="subtitle-container">
                 <p class="subtitle line-1">Risk Management | Information Security | Compliance | Internal Audit | Continuous Improvement</p>
@@ -474,55 +452,37 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.getElementById('menu-btn');
-            const navMenu = document.getElementById('nav-menu');
-
-            if (menuToggle && navMenu) {
-                // Toggle Menu when clicking Hamburger
-                menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
-                    navMenu.classList.toggle('active');
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                        navMenu.classList.remove('active');
-                    }
-                });
+        // Simple Global Function - Easiest for debugging
+        function toggleMobileMenu() {
+            var menu = document.getElementById("nav-menu");
+            if (menu.classList.contains("active")) {
+                menu.classList.remove("active");
+            } else {
+                menu.classList.add("active");
             }
-        });
+        }
 
         function selectMenuItem(sectionId) {
             // Close the menu on mobile after clicking
-            const navMenu = document.getElementById('nav-menu');
-            if (navMenu) {
-                navMenu.classList.remove('active');
+            var menu = document.getElementById("nav-menu");
+            if (menu) {
+                menu.classList.remove("active");
             }
 
             // Show Section Logic
-            const allSections = document.querySelectorAll('section, header');
+            var allSections = document.querySelectorAll('section, header');
             allSections.forEach(section => {
                 section.classList.remove('active-section');
                 section.style.display = 'none';
             });
 
-            const activeSection = document.getElementById(sectionId);
+            var activeSection = document.getElementById(sectionId);
             if (activeSection) {
                 activeSection.style.display = (sectionId === 'home' || sectionId === 'contact') ? 'flex' : 'block';
                 setTimeout(() => {
                     activeSection.classList.add('active-section');
                 }, 10);
             }
-
-            const navLinks = document.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick').includes(sectionId)) {
-                    link.classList.add('active');
-                }
-            });
             
             window.scrollTo(0,0);
         }
